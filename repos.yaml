@@ -5,7 +5,14 @@ repositories:
       - "hello World"
       - "this is my test release"
     enabled: true
-    tag: "4.0.19-python-release"
+    tag: "4.0.20-python-release"
+  - name: "ziberini/abcxyz"
+    release_notes: 
+      - "Hello"
+      - "hello World"
+      - "this is my test release"
+    enabled: true
+    tag: "4.0.14-python-release"
   - name: "ziberini/my-new-app"
     release_notes:
       - "Hello"

@@ -1,10 +1,13 @@
-import os
 import yaml
 from github import Github, Auth
+import os
 from colorama import init, Fore, Style
 
-# Initialize colorama
-init()
+# Initialize colorama with strip=False if FORCE_COLOR is set
+if os.getenv('FORCE_COLOR', '0') == '1':
+    init(strip=False)
+else:
+    init(strip=True)
 
 # Load the YAML configuration file
 

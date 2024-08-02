@@ -1,5 +1,6 @@
 import os
 import yaml
+import json
 import subprocess
 from github import Github
 
@@ -36,14 +37,25 @@ def main():
         if repo_info['enabled']:
             repo_name = repo_info['name']
             tag = repo_info['tag']
+            release_notes = repo_info['release_notes']
+            release_notes_str = "\\n".join(release_notes)  # Join release notes with new line character
             try:
                 repo = g.get_repo(repo_name)
                 if not tag_exists(repo, tag):
                     print(f"Tag {tag} not found in {repo_name}, updating deployment.yaml")
-                    subprocess.run(['curl', '-X', 'POST', '-H', f"Authorization: token {token}", 
-                                    '-H', 'Accept: application/vnd.github.v3+json', 
-                                    f'https://api.github.com/repos/{repo_name}/actions/workflows/update-deployment.yml/dispatches', 
-                                    '-d', f'{{"ref":"xyz", "inputs":{{"tag":"{tag}"}}}}'], check=True)
+                    payload = json.dumps({
+                        "ref": "xyz",
+                        "inputs": {
+                            "tag": tag,
+                            "release_notes": release_notes_str
+                        }
+                    })
+                    subprocess.run([
+                        'curl', '-X', 'POST', '-H', f"Authorization: token {token}", 
+                        '-H', 'Accept: application/vnd.github.v3+json', 
+                        f'https://api.github.com/repos/{repo_name}/actions/workflows/update-deployment.yml/dispatches', 
+                        '-d', payload
+                    ], check=True)
                 else:
                     print(f"Tag {tag} already exists in {repo_name}, skipping update.")
             except Exception as e:

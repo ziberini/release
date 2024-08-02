@@ -42,6 +42,7 @@ def main():
             try:
                 repo = g.get_repo(repo_name)
                 if not tag_exists(repo, tag):
+                    print(release_notes_str)
                     print(f"Tag {tag} not found in {repo_name}, updating deployment.yaml")
                     payload = json.dumps({
                         "ref": "xyz",

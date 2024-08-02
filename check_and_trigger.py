@@ -26,9 +26,9 @@ def main():
     config = load_config('repos.yaml')
 
     # Authenticate with GitHub using a personal access token
-    token = os.getenv('GITHUB_TOKEN')
+    token = os.getenv('PERSONAL_ACCESS_TOKEN')
     if not token:
-        raise ValueError("GITHUB_TOKEN environment variable is not set")
+        raise ValueError("PERSONAL_ACCESS_TOKEN environment variable is not set")
 
     # using an access token
     g = Github(token)
@@ -42,7 +42,6 @@ def main():
             try:
                 repo = g.get_repo(repo_name)
                 if not tag_exists(repo, tag):
-                    print(release_notes_str)
                     print(f"Tag {tag} not found in {repo_name}, updating deployment.yaml")
                     payload = json.dumps({
                         "ref": "xyz",
@@ -57,6 +56,21 @@ def main():
                         f'https://api.github.com/repos/{repo_name}/actions/workflows/update-deployment.yml/dispatches', 
                         '-d', payload
                     ], check=True)
+                    
+                    # Save release notes to a temporary file
+                    with open('release_notes.txt', 'w') as f:
+                        f.write(release_notes_str)
+                    
+                    # Commit the release notes file to ensure it's included in the tag
+                    subprocess.run(['git', 'add', 'release_notes.txt'], check=True)
+                    subprocess.run(['git', 'commit', '-m', 'Add release notes'], check=True)
+                    
+                    # Create and push the tag to trigger the release creation workflow
+                    subprocess.run(['git', 'tag', tag], check=True)
+                    subprocess.run(['git', 'push', 'origin', tag], check=True)
+
+                    # Upload the release notes as an artifact
+                    subprocess.run(['actions/upload-artifact@v2', '--name', 'release_notes', '--path', 'release_notes.txt'], check=True)
                 else:
                     print(f"Tag {tag} already exists in {repo_name}, skipping update.")
             except Exception as e:

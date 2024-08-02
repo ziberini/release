@@ -26,4 +26,10 @@ jobs:
       - name: Run check_and_trigger.py
         run: python check_and_trigger.py
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Upload release notes artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: release_notes
+          path: release_notes.txt

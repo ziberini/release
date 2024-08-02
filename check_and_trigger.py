@@ -56,6 +56,14 @@ def main():
                         f'https://api.github.com/repos/{repo_name}/actions/workflows/update-deployment.yml/dispatches', 
                         '-d', payload
                     ], check=True)
+                    
+                    # Push the tag to trigger the release creation workflow
+                    subprocess.run([
+                        'git', 'tag', tag
+                    ], check=True)
+                    subprocess.run([
+                        'git', 'push', 'origin', tag
+                    ], check=True)
                 else:
                     print(f"Tag {tag} already exists in {repo_name}, skipping update.")
             except Exception as e:

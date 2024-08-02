@@ -24,7 +24,6 @@ jobs:
       - name: Read repos.yaml
         id: read_yaml
         run: |
-          import yaml
           with open('repos.yaml', 'r') as file:
               repos = yaml.safe_load(file)
               print(f"::set-output name=repos::{repos}")

@@ -26,4 +26,4 @@ repositories:
       - "hello World"
       - "this is my test release"
     enabled: true
-    tag: "v0.0.10"
+    tag: "v0.0.11"

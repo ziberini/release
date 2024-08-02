@@ -68,9 +68,6 @@ def main():
                     # Create and push the tag to trigger the release creation workflow
                     subprocess.run(['git', 'tag', tag], check=True)
                     subprocess.run(['git', 'push', 'origin', tag], check=True)
-
-                    # Upload the release notes as an artifact
-                    subprocess.run(['actions/upload-artifact@v2', '--name', 'release_notes', '--path', 'release_notes.txt'], check=True)
                 else:
                     print(f"Tag {tag} already exists in {repo_name}, skipping update.")
             except Exception as e:

@@ -1,29 +1,29 @@
 repositories:
-  - name: "ziberini/practice"
-    release_notes: 
-      - "Hello"
-      - "hello World"
-      - "this is my test release"
-    enabled: true
-    tag: "4.0.25-python-release"
-  - name: "ziberini/momer"
-    release_notes: 
-      - "Hello"
-      - "hello World"
-      - "this is my test release"
-    enabled: true
-    tag: "4.0.15-python-release"
-  - name: "ziberini/my-new-app"
-    release_notes:
-      - "Hello"
-      - "hello World"
-      - "this is my test release"
-    enabled: true
-    tag: "v4.0.10-python-release"
+  # - name: "ziberini/practice"
+  #   release_notes: 
+  #     - "Hello"
+  #     - "hello World"
+  #     - "this is my test release"
+  #   enabled: true
+  #   tag: "4.0.25-python-release"
+  # - name: "ziberini/momer"
+  #   release_notes: 
+  #     - "Hello"
+  #     - "hello World"
+  #     - "this is my test release"
+  #   enabled: true
+  #   tag: "4.0.15-python-release"
+  # - name: "ziberini/my-new-app"
+  #   release_notes:
+  #     - "Hello"
+  #     - "hello World"
+  #     - "this is my test release"
+  #   enabled: true
+  #   tag: "v4.0.10-python-release"
   - name: "ziberini/k8s"
     release_notes: 
       - "Hello"
       - "hello World"
       - "this is my test release"
     enabled: true
-    tag: "v0.0.5"
+    tag: "v0.0.6"

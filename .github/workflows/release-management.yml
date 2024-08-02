@@ -1,0 +1,46 @@
+name: Release Management
+
+on:
+  push:
+    paths:
+      - 'repos.yaml'
+  workflow_dispatch:  # Manually triggered
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Read repos.yaml
+        id: read_yaml
+        run: |
+          import yaml
+          with open('repos.yaml', 'r') as file:
+              repos = yaml.safe_load(file)
+              print(f"::set-output name=repos::{repos}")
+
+      - name: Check and Trigger Update
+        run: |
+          echo "${{ steps.read_yaml.outputs.repos }}" > repos.txt
+          python check_and_trigger.py
+
+      - name: Output Debug Info
+        run: cat repos.txt
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: repos
+          path: repos.txt
+
+# The python script check_and_trigger.py will contain the logic to check tags and trigger workflows

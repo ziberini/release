@@ -38,7 +38,7 @@ def main():
             repo_name = repo_info['name']
             tag = repo_info['tag']
             release_notes = repo_info['release_notes']
-            release_notes_str = "\\n".join(release_notes)  # Join release notes with new line character
+            release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
             try:
                 repo = g.get_repo(repo_name)
                 if not tag_exists(repo, tag):

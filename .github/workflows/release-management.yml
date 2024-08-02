@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install PyYAML
+      - name: Install Dependencies
         run: |
             pip install pyyaml
             pip3 install PyGithub

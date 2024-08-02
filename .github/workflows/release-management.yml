@@ -19,7 +19,9 @@ jobs:
           python-version: '3.x'
 
       - name: Install PyYAML
-        run: pip install pyyaml
+        run: |
+            pip install pyyaml
+            pip3 install PyGithub
 
       - name: Run check_and_trigger.py
         run: python check_and_trigger.py

@@ -6,9 +6,6 @@ on:
       - 'repos.yaml'
   workflow_dispatch:  # Manually triggered
 
-permissions:
-  contents: write
-
 jobs:
   check-and-update:
     runs-on: ubuntu-latest

@@ -21,23 +21,7 @@ jobs:
       - name: Install PyYAML
         run: pip install pyyaml
 
-      - name: Read repos.yaml
-        id: read_yaml
-        run: |
-          with open('repos.yaml', 'r') as file:
-              repos = yaml.safe_load(file)
-              print(f"::set-output name=repos::{repos}")
-
-      - name: Check and Trigger Update
-        run: |
-          echo "${{ steps.read_yaml.outputs.repos }}" > repos.txt
-          python check_and_trigger.py
-
-      - name: Output Debug Info
-        run: cat repos.txt
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: repos
-          path: repos.txt
+      - name: Run check_and_trigger.py
+        run: python check_and_trigger.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

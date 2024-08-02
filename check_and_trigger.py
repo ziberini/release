@@ -64,6 +64,14 @@ def main():
                     with open(os.path.expanduser("~/.git-credentials"), 'w') as creds:
                         creds.write(f'https://{token}:x-oauth-basic@github.com\n')
                     
+                    # Save release notes to a temporary file
+                    with open('release_notes.txt', 'w') as f:
+                        f.write(release_notes_str)
+                    
+                    # Commit the release notes file to ensure it's included in the tag
+                    subprocess.run(['git', 'add', 'release_notes.txt'], check=True)
+                    subprocess.run(['git', 'commit', '-m', 'Add release notes'], check=True)
+                    
                     # Push the tag to trigger the release creation workflow
                     subprocess.run(['git', 'tag', tag], check=True)
                     subprocess.run(['git', 'push', 'origin', tag], check=True)

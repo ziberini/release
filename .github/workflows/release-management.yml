@@ -26,4 +26,4 @@ jobs:
       - name: Run check_and_trigger.py
         run: python check_and_trigger.py
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}

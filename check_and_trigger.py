@@ -26,9 +26,9 @@ def main():
     config = load_config('repos.yaml')
 
     # Authenticate with GitHub using a personal access token
-    token = os.getenv('GITHUB_TOKEN')
+    token = os.getenv('PERSONAL_ACCESS_TOKEN')
     if not token:
-        raise ValueError("GITHUB_TOKEN environment variable is not set")
+        raise ValueError("PERSONAL_ACCESS_TOKEN environment variable is not set")
 
     # using an access token
     g = Github(token)
@@ -57,13 +57,16 @@ def main():
                         '-d', payload
                     ], check=True)
                     
+                    # Set up git with the PAT
+                    subprocess.run(['git', 'config', '--global', 'user.name', 'github-actions'], check=True)
+                    subprocess.run(['git', 'config', '--global', 'user.email', 'github-actions@github.com'], check=True)
+                    subprocess.run(['git', 'config', '--global', 'credential.helper', 'store'], check=True)
+                    with open(os.path.expanduser("~/.git-credentials"), 'w') as creds:
+                        creds.write(f'https://{token}:x-oauth-basic@github.com\n')
+                    
                     # Push the tag to trigger the release creation workflow
-                    subprocess.run([
-                        'git', 'tag', tag
-                    ], check=True)
-                    subprocess.run([
-                        'git', 'push', 'origin', tag
-                    ], check=True)
+                    subprocess.run(['git', 'tag', tag], check=True)
+                    subprocess.run(['git', 'push', 'origin', tag], check=True)
                 else:
                     print(f"Tag {tag} already exists in {repo_name}, skipping update.")
             except Exception as e:

@@ -42,5 +42,3 @@ jobs:
         with:
           name: repos
           path: repos.txt
-
-# The python script check_and_trigger.py will contain the logic to check tags and trigger workflows

@@ -18,7 +18,7 @@ repositories:
     release_notes:
       - "Hello"
       - "hello World"
-      - "this is my test release" 
+      - "this is my test" 
     enabled: true
     tag: "v4.0.10-python"
   - name: "ziberini/k8s"

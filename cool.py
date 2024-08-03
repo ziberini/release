@@ -21,6 +21,18 @@ def has_changes():
     result = subprocess.run(['git', 'status', '--porcelain'], capture_output=True, text=True)
     return bool(result.stdout.strip())
 
+# Function to check if a tag exists in the repository
+def tag_exists(repo, tag):
+    try:
+        tags = repo.get_tags()
+        for t in tags:
+            if t.name == tag:
+                return True
+        return False
+    except Exception as e:
+        print(f"Error checking tags for {repo.name}: {e}")
+        return False
+
 # Main function
 def main():
     config = load_config('repos.yaml')
@@ -43,6 +55,11 @@ def main():
 
             try:
                 print(f"Processing repository: {repo_name}")
+
+                repo = g.get_repo(repo_name)
+                if tag_exists(repo, tag):
+                    print(f"Tag {tag} already exists in {repo_name}. Skipping processing.")
+                    continue
 
                 # Clone the repository and checkout the xyz branch
                 repo_dir = repo_name.split('/')[-1]

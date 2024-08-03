@@ -52,6 +52,11 @@ def main():
                     file.write(release_notes_str)
                 print("release_notes.txt file created successfully")
 
+                # Verify the release_notes.txt file content
+                with open('release_notes.txt', 'r') as file:
+                    content = file.read()
+                    print(f"release_notes.txt content:\n{content}")
+
                 # Update the deployment.yaml file with the new tag
                 with open(deployment_path, 'r') as file:
                     deployment_data = yaml.safe_load(file)

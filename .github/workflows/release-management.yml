@@ -23,7 +23,7 @@ jobs:
           pip install pyyaml
           pip3 install PyGithub
 
-      - name: Run check_and_trigger.py
+      - name: Run cool.py
         run: python cool.py
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -3,7 +3,7 @@ repositories:
     release_notes: 
       - "Hello"
       - "hello World"
-      - "this is my tests"
+      - "this is my test"
     enabled: true
     tag: "4.0.26"
   - name: "ziberini/momer"

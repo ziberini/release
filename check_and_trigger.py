@@ -39,8 +39,6 @@ def main():
             tag = repo_info['tag']
             release_notes = repo_info['release_notes']
             release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
-            owner, repo = repo_name.split('/')
-            deployment_repo = f"{owner}/{repo}-deploy"
             try:
                 repo = g.get_repo(repo_name)
                 if not tag_exists(repo, tag):
@@ -57,7 +55,7 @@ def main():
                     subprocess.run(['git', 'tag', tag], check=True)
                     subprocess.run(['git', 'push', 'origin', tag], check=True)
                     
-                    # Trigger the deployment workflow in the deployment repository
+                    # Trigger the deployment workflow in the respective repository
                     dispatch_payload = {
                         "event_type": "trigger-deploy",
                         "client_payload": {
@@ -68,7 +66,7 @@ def main():
                     subprocess.run([
                         'curl', '-X', 'POST', '-H', f"Authorization: token {token}", 
                         '-H', 'Accept: application/vnd.github.v3+json', 
-                        f'https://api.github.com/repos/{deployment_repo}/dispatches', 
+                        f'https://api.github.com/repos/{repo_name}/dispatches', 
                         '-d', json.dumps(dispatch_payload)
                     ], check=True)
                 else:

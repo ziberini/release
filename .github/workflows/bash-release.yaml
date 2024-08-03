@@ -3,7 +3,7 @@ name: Update Deployment
 on:
   push:
     paths:
-      - 'bash-release.sh'
+      - 'cool.sh'
 
 jobs:
   update-deployment:
@@ -21,7 +21,7 @@ jobs:
 
       - name: Run Update Script
         run: |
-          chmod +x bash-release.sh
-          ./bash-release.sh
+          chmod +x cool.sh
+          ./cool.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

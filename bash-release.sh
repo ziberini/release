@@ -19,6 +19,7 @@ NC='\033[0m'  # No Color
 tag_exists() {
   local repo=$1
   local tag=$2
+  echo -e "${YELLOW}Checking if tag $tag exists in repository $repo...${NC}"
   if git ls-remote --tags "https://$GITHUB_TOKEN:x-oauth-basic@github.com/$repo.git" | grep -q "refs/tags/$tag"; then
     return 0
   else
@@ -71,15 +72,15 @@ for index in $(seq 0 $(($repo_length - 1))); do
     # Clone the repository and checkout the xyz branch
     git clone "https://$GITHUB_TOKEN:x-oauth-basic@github.com/$repo.git" "${repo##*/}"
     cd "${repo##*/}"
-    echo "Cloned repository $repo and switched to directory ${repo##*/}"
+    echo -e "${GREEN}Cloned repository $repo and switched to directory ${repo##*/}${NC}"
     git fetch origin xyz:xyz
     git checkout xyz
-    echo "Checked out xyz branch"
+    echo -e "${GREEN}Checked out xyz branch${NC}"
 
     # Create or update release_notes.txt with the release notes
     echo -e "$release_notes" > release_notes.txt
     echo -e "${GREEN}release_notes.txt file generated successfully${NC}"
-    echo "release_notes.txt content:"
+    echo -e "${GREEN}release_notes.txt content:${NC}"
     cat release_notes.txt
 
     # Update the deployment.yaml file with the new tag if deployment_path is specified
@@ -93,7 +94,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
         continue
       fi
     else
-      echo "${repo} does not have a deployment file to update or deployment_path is null, skipping deployment update."
+      echo -e "${YELLOW}${repo} does not have a deployment file to update or deployment_path is null, skipping deployment update.${NC}"
     fi
 
     # Commit and push the changes if there are any
@@ -106,21 +107,21 @@ for index in $(seq 0 $(($repo_length - 1))); do
         commit_message="Add release notes with tag $tag"
       fi
       git commit -m "$commit_message"
-      echo "Committed changes to git"
+      echo -e "${GREEN}Committed changes to git${NC}"
       git push origin xyz
-      echo "Pushed changes to xyz branch"
+      echo -e "${GREEN}Pushed changes to xyz branch${NC}"
     else
-      echo "No changes to commit"
+      echo -e "${YELLOW}No changes to commit${NC}"
     fi
 
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
-      echo "Updated $repo to prep xyz branch for gh release."
+      echo -e "${GREEN}Updated $repo with tag $tag in deployment.yaml and pushed to xyz branch with release notes.${NC}"
     fi
     echo -e "${GREEN}release_notes.txt file uploaded successfully${NC}"
 
     # Go back to the root directory
     cd ..
     rm -rf "${repo##*/}"
-    echo "Cleaned up local repository ${repo}"
+    echo -e "${GREEN}Cleaned up local repository ${repo}${NC}"
   fi
 done

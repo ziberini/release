@@ -55,7 +55,6 @@ def main():
 
             try:
                 print("=============================================================================")
-                print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
                 print(f"Processing repository: {repo_name}")
 
                 repo = g.get_repo(repo_name)

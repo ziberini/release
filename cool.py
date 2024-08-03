@@ -33,6 +33,21 @@ def tag_exists(repo, tag):
         print(f"Error checking tags for {repo.name}: {e}")
         return False
 
+# Function to update the image tag in the deployment.yaml file
+def update_deployment_image(deployment_data, tag):
+    if 'spec' in deployment_data and 'template' in deployment_data['spec'] and 'spec' in deployment_data['spec']['template']:
+        # Handle case: spec.template.spec.image
+        if 'image' in deployment_data['spec']['template']['spec']:
+            deployment_data['spec']['template']['spec']['image'] = f"{deployment_data['spec']['template']['spec']['image'].split(':')[0]}:{tag}"
+            return True
+        # Handle case: spec.template.spec.containers[].image
+        elif 'containers' in deployment_data['spec']['template']['spec']:
+            for container in deployment_data['spec']['template']['spec']['containers']:
+                if 'image' in container:
+                    container['image'] = f"{container['image'].split(':')[0]}:{tag}"
+                    return True
+    return False
+
 # Main function
 def main():
     config = load_config('repos.yaml')
@@ -85,10 +100,7 @@ def main():
                     with open(deployment_path, 'r') as file:
                         deployment_data = yaml.safe_load(file)
 
-                    # Find and update the image tag in the spec.template.spec.image
-                    if 'spec' in deployment_data and 'template' in deployment_data['spec'] and 'spec' in deployment_data['spec']['template'] and 'image' in deployment_data['spec']['template']['spec']:
-                        deployment_data['spec']['template']['spec']['image'] = f"{deployment_data['spec']['template']['spec']['image'].split(':')[0]}:{tag}"
-                    else:
+                    if not update_deployment_image(deployment_data, tag):
                         print(f"Error: The deployment.yaml structure is not as expected.")
                         continue
 

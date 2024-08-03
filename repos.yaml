@@ -1,19 +1,19 @@
 repositories:
-  # - name: "ziberini/practice"
-  #   deployment_path: ""
-  #   release_notes: 
-  #     - "Hello"
-  #     - "hello World"
-  #     - "this is my test"
-  #   enabled: true
-  #   tag: "4.0.26"
-  # - name: "ziberini/momer"
-  #   release_notes: 
-  #     - "Hello"
-  #     - "hello World"
-  #     - "this is my test"
-  #   enabled: true
-  #   tag: "4.0.18"
+  - name: "ziberini/practice"
+    deployment_path: ""
+    release_notes: 
+      - "Hello"
+      - "hello World"
+      - "this is my test"
+    enabled: true
+    tag: "4.0.26"
+  - name: "ziberini/momer"
+    release_notes: 
+      - "Hello"
+      - "hello World"
+      - "this is my test"
+    enabled: true
+    tag: "4.0.18"
   - name: "ziberini/my-new-app"
     release_notes:
       - "Hello"

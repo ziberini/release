@@ -12,6 +12,7 @@ fi
 # Define color codes
 GREEN='\033[32m'
 YELLOW='\033[33m'
+RED='\033[31m'
 NC='\033[0m'  # No Color
 
 # Function to check if a tag exists in the repository
@@ -33,14 +34,14 @@ update_deployment_image() {
     sed -i "s|\(image: .*:\).*|\1$tag|g" "$deployment_path"
     return 0
   else
-    echo "Error: The deployment.yaml structure is not as expected or file not found: $deployment_path"
+    echo -e "${RED}Error: The deployment.yaml structure is not as expected or file not found: $deployment_path${NC}"
     return 1
   fi
 }
 
 # Read YAML file
 if [ ! -f repos.yaml ]; then
-  echo -e "\033[31mrepos.yaml file not found.\033[0m"
+  echo -e "${RED}repos.yaml file not found.${NC}"
   exit 1
 fi
 
@@ -59,8 +60,8 @@ for index in $(seq 0 $(($repo_length - 1))); do
     tag=$(echo "$repositories" | yq e ".[$index].tag" -)
     deployment_path=$(echo "$repositories" | yq e ".[$index].deployment_path" -)
 
-    echo "================================================================================="
-    echo "Processing repository: $repo"
+    echo -e "${YELLOW}=================================================================================${NC}"
+    echo -e "${YELLOW}Processing repository: $repo${NC}"
 
     if tag_exists "$repo" "$tag"; then
       echo -e "${GREEN}Tag $tag already exists in $repo. Skipping processing.${NC}"
@@ -70,29 +71,29 @@ for index in $(seq 0 $(($repo_length - 1))); do
     # Clone the repository and checkout the xyz branch
     git clone "https://$GITHUB_TOKEN:x-oauth-basic@github.com/$repo.git" "${repo##*/}"
     cd "${repo##*/}"
-    echo "Cloned repository $repo and switched to directory ${repo##*/}"
+    echo -e "${GREEN}Cloned repository $repo and switched to directory ${repo##*/}${NC}"
     git fetch origin xyz:xyz
     git checkout xyz
-    echo "Checked out xyz branch"
+    echo -e "${GREEN}Checked out xyz branch${NC}"
 
     # Create or update release_notes.txt with the release notes
     echo -e "$release_notes" > release_notes.txt
-    echo "release_notes.txt file generated successfully"
-    echo "release_notes.txt content:"
+    echo -e "${GREEN}release_notes.txt file generated successfully${NC}"
+    echo -e "${GREEN}release_notes.txt content:${NC}"
     cat release_notes.txt
 
     # Update the deployment.yaml file with the new tag if deployment_path is specified
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
       # Update the deployment.yaml file with the new tag
       if update_deployment_image "$deployment_path" "$tag"; then
-        echo "$deployment_path file updated successfully"
+        echo -e "${GREEN}$deployment_path file updated successfully${NC}"
       else
         cd ..
         rm -rf "${repo##*/}"
         continue
       fi
     else
-      echo "No deployment_path specified or deployment_path is null, skipping deployment update."
+      echo -e "${YELLOW}No deployment_path specified or deployment_path is null, skipping deployment update.${NC}"
     fi
 
     # Commit and push the changes if there are any
@@ -105,21 +106,21 @@ for index in $(seq 0 $(($repo_length - 1))); do
         commit_message="Add release notes with tag $tag"
       fi
       git commit -m "$commit_message"
-      echo "Committed changes to git"
+      echo -e "${GREEN}Committed changes to git${NC}"
       git push origin xyz
-      echo "Pushed changes to xyz branch"
+      echo -e "${GREEN}Pushed changes to xyz branch${NC}"
     else
-      echo "No changes to commit"
+      echo -e "${YELLOW}No changes to commit${NC}"
     fi
 
     # Go back to the root directory
     cd ..
     rm -rf "${repo##*/}"
-    echo "Cleaned up local repository ${repo##*/}"
+    echo -e "${GREEN}Cleaned up local repository ${repo##*/}${NC}"
 
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
-      echo "Updated $repo with tag $tag in deployment.yaml and pushed to xyz branch with release notes."
+      echo -e "${GREEN}Updated $repo with tag $tag in deployment.yaml and pushed to xyz branch with release notes.${NC}"
     fi
-    echo "release_notes.txt file uploaded successfully"
+    echo -e "${GREEN}release_notes.txt file uploaded successfully${NC}"
   fi
 done

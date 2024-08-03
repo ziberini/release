@@ -28,4 +28,4 @@ repositories:
       - "* this is my test release"
       - "* another note here"
     enabled: true
-    tag: "1.0.50"
+    tag: "1.0.49"

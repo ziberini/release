@@ -54,7 +54,6 @@ def main():
             release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
 
             try:
-                print("===================================================================================")
                 print(f"Processing repository: {repo_name}")
 
                 repo = g.get_repo(repo_name)
@@ -111,7 +110,8 @@ def main():
                 run_command(f'rm -rf {repo_dir}')
                 print(f"Cleaned up local repository {repo_dir}")
 
-                print(f"Updated {repo_name} with tag {tag} in deployment.yaml and pushed to xyz branch with release notes.")
+                if deployment_path:
+                    print(f"Updated {repo_name} with tag {tag} in deployment.yaml and pushed to xyz branch with release notes.")
                 print("release_notes.txt file uploaded successfully")
 
             except Exception as e:

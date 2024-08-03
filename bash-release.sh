@@ -9,7 +9,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
   exit 1
 fi
 
-# Define color codes
+# Define color codes##
 GREEN='\033[32m'
 YELLOW='\033[33m'
 NC='\033[0m'  # No Color

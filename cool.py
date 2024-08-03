@@ -35,17 +35,11 @@ def tag_exists(repo, tag):
 
 # Function to update the image tag in the deployment.yaml file
 def update_deployment_image(deployment_data, tag):
-    if 'spec' in deployment_data and 'template' in deployment_data['spec'] and 'spec' in deployment_data['spec']['template']:
-        # Handle case: spec.template.spec.image
-        if 'image' in deployment_data['spec']['template']['spec']:
-            deployment_data['spec']['template']['spec']['image'] = f"{deployment_data['spec']['template']['spec']['image'].split(':')[0]}:{tag}"
-            return True
-        # Handle case: spec.template.spec.containers[].image
-        elif 'containers' in deployment_data['spec']['template']['spec']:
-            for container in deployment_data['spec']['template']['spec']['containers']:
-                if 'image' in container:
-                    container['image'] = f"{container['image'].split(':')[0]}:{tag}"
-                    return True
+    if 'spec' in deployment_data and 'template' in deployment_data['spec'] and 'spec' in deployment_data['spec']['template'] and 'containers' in deployment_data['spec']['template']['spec']:
+        for container in deployment_data['spec']['template']['spec']['containers']:
+            if 'image' in container:
+                container['image'] = f"{container['image'].split(':')[0]}:{tag}"
+                return True
     return False
 
 # Main function
@@ -69,6 +63,7 @@ def main():
             release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
 
             try:
+                print("=================================================================================")
                 print(f"Processing repository: {repo_name}")
 
                 repo = g.get_repo(repo_name)

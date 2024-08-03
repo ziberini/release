@@ -51,6 +51,10 @@ def main():
                     with open(os.path.expanduser("~/.git-credentials"), 'w') as creds:
                         creds.write(f'https://{token}:x-oauth-basic@github.com\n')
                     
+                    # Clone the repository
+                    subprocess.run(['git', 'clone', f'https://{token}:x-oauth-basic@github.com/{repo_name}.git'], check=True)
+                    os.chdir(repo_name.split('/')[-1])
+                    
                     # Create and push the tag
                     subprocess.run(['git', 'tag', tag], check=True)
                     subprocess.run(['git', 'push', 'origin', tag], check=True)

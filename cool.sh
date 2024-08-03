@@ -2,7 +2,7 @@
 
 set -e
 
-# Load GitHub token from environment variable#
+# Load GitHub token from environment variable
 GITHUB_TOKEN=${GITHUB_TOKEN}
 if [ -z "$GITHUB_TOKEN" ]; then
   echo -e "\033[31mGITHUB_TOKEN environment variable is not set.\033[0m"  # Red color for errors

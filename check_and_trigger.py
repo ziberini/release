@@ -39,35 +39,31 @@ def main():
             tag = repo_info['tag']
             release_notes = repo_info['release_notes']
             release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
+            owner, repo = repo_name.split('/')
+            deployment_repo = f"{owner}/{repo}-deploy"
             try:
                 repo = g.get_repo(repo_name)
                 if not tag_exists(repo, tag):
-                    print(f"Tag {tag} not found in {repo_name}, updating deployment.yaml")
-                    payload = json.dumps({
-                        "ref": "xyz",
-                        "inputs": {
+                    print(f"Tag {tag} not found in {repo_name}, creating tag and dispatching event.")
+                    
+                    # Create and push the tag
+                    subprocess.run(['git', 'tag', tag], check=True)
+                    subprocess.run(['git', 'push', 'origin', tag], check=True)
+                    
+                    # Trigger the deployment workflow in the deployment repository
+                    dispatch_payload = {
+                        "event_type": "trigger-deploy",
+                        "client_payload": {
                             "tag": tag,
                             "release_notes": release_notes_str
                         }
-                    })
+                    }
                     subprocess.run([
                         'curl', '-X', 'POST', '-H', f"Authorization: token {token}", 
                         '-H', 'Accept: application/vnd.github.v3+json', 
-                        f'https://api.github.com/repos/{repo_name}/actions/workflows/update-deployment.yml/dispatches', 
-                        '-d', payload
+                        f'https://api.github.com/repos/{deployment_repo}/dispatches', 
+                        '-d', json.dumps(dispatch_payload)
                     ], check=True)
-                    
-                    # Save release notes to a temporary file
-                    with open('release_notes.txt', 'w') as f:
-                        f.write(release_notes_str)
-                    
-                    # Commit the release notes file to ensure it's included in the tag
-                    subprocess.run(['git', 'add', 'release_notes.txt'], check=True)
-                    subprocess.run(['git', 'commit', '-m', 'Add release notes'], check=True)
-                    
-                    # Create and push the tag to trigger the release creation workflow
-                    subprocess.run(['git', 'tag', tag], check=True)
-                    subprocess.run(['git', 'push', 'origin', tag], check=True)
                 else:
                     print(f"Tag {tag} already exists in {repo_name}, skipping update.")
             except Exception as e:

@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'repos.yaml'
-  workflow_dispatch:  # Manually triggered
+  workflow_dispatch:
 
 jobs:
   check-and-update:
@@ -20,17 +20,10 @@ jobs:
 
       - name: Install Dependencies
         run: |
-            pip install pyyaml
-            pip3 install PyGithub
+          pip install pyyaml
+          pip3 install PyGithub
 
       - name: Run check_and_trigger.py
         run: python check_and_trigger.py
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: Upload release notes artifact
-        if: success()
-        uses: actions/upload-artifact@v2
-        with:
-          name: release_notes
-          path: release_notes.txt

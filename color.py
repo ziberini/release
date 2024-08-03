@@ -37,16 +37,20 @@ def main():
             release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
 
             try:
+                print(f"Processing repository: {repo_name}")
+
                 # Clone the repository and checkout the xyz branch
                 repo_dir = repo_name.split('/')[-1]
                 run_command(f'git clone https://{token}:x-oauth-basic@github.com/{repo_name}.git')
                 os.chdir(repo_dir)
+                print(f"Cloned repository {repo_name} and switched to directory {repo_dir}")
                 run_command('git checkout xyz')
+                print("Checked out xyz branch")
 
                 # Create or update release_notes.txt with the release notes
                 with open('release_notes.txt', 'w') as file:
                     file.write(release_notes_str)
-                print("release_notes.txt file created successfully.")
+                print("release_notes.txt file created successfully")
 
                 # Update the deployment.yaml file with the new tag
                 with open(deployment_path, 'r') as file:
@@ -59,21 +63,24 @@ def main():
 
                 with open(deployment_path, 'w') as file:
                     yaml.safe_dump(deployment_data, file)
-                print("deployment.yaml file updated successfully.")
+                print("deployment.yaml file updated successfully")
 
                 # Commit and push the changes
                 run_command('git config --global user.name "github-actions"')
                 run_command('git config --global user.email "github-actions@github.com"')
                 run_command('git add .')
                 run_command(f'git commit -m "Update deployment.yaml with tag {tag} and add release_notes.txt"')
+                print("Committed changes to git")
                 run_command('git push origin xyz')
+                print("Pushed changes to xyz branch")
 
                 # Go back to the root directory
                 os.chdir('..')
                 run_command(f'rm -rf {repo_dir}')
+                print(f"Cleaned up local repository {repo_dir}")
 
                 print(f"Updated {repo_name} with tag {tag} in deployment.yaml and pushed to xyz branch with release notes.")
-                print("release_notes.txt file uploaded successfully.")
+                print("release_notes.txt file uploaded successfully")
 
             except Exception as e:
                 print(f"Error accessing repository {repo_name}: {e}")

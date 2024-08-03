@@ -47,17 +47,17 @@ fi
 repositories=$(yq e '.repositories' repos.yaml)
 
 # Get the length of the repositories array
-repo_length=$(echo "$repositories" | yq e 'length')
+repo_length=$(echo "$repositories" | yq e 'length' -)
 
 # Iterate over repositories
-for ((index=0; index<repo_length; index++)); do
-  enabled=$(echo "$repositories" | yq e ".[$index].enabled")
+for index in $(seq 0 $(($repo_length - 1))); do
+  enabled=$(echo "$repositories" | yq e ".[$index].enabled" -)
   
   if [ "$enabled" == "true" ]; then
-    repo=$(echo "$repositories" | yq e ".[$index].name")
-    release_notes=$(echo "$repositories" | yq e -o=json ".[$index].release_notes" | jq -r '.[]' | sed 's/^/- /')
-    tag=$(echo "$repositories" | yq e ".[$index].tag")
-    deployment_path=$(echo "$repositories" | yq e ".[$index].deployment_path")
+    repo=$(echo "$repositories" | yq e ".[$index].name" -)
+    release_notes=$(echo "$repositories" | yq e -o=json ".[$index].release_notes" - | jq -r '.[]' | sed 's/^/- /')
+    tag=$(echo "$repositories" | yq e ".[$index].tag" -)
+    deployment_path=$(echo "$repositories" | yq e ".[$index].deployment_path" -)
 
     echo "================================================================================="
     echo "Processing repository: $repo"

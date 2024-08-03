@@ -113,14 +113,14 @@ for index in $(seq 0 $(($repo_length - 1))); do
       echo "No changes to commit"
     fi
 
-    # Go back to the root directory
-    cd ..
-    rm -rf "${repo##*/}"
-    echo -e "$Cleaned up local repository ${repo##*/}"
-
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
       echo "updated $repo with tag $tag in deployment.yaml and pushed to xyz branch with release notes."
     fi
     echo -e "${GREEN}release_notes.txt file uploaded successfully${NC}"
+    
+    # Go back to the root directory
+    cd ..
+    rm -rf "${repo##*/}"
+    echo "Cleaned up local repository ${repo}"
   fi
 done

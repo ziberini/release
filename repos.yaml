@@ -27,4 +27,4 @@ repositories:
       - "hello World"
       - "this is my test release"
     enabled: true
-    tag: "0.0.36-cool"
+    tag: "0.0.37"

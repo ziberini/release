@@ -67,6 +67,7 @@ def main():
                 run_command(f'git clone https://{token}:x-oauth-basic@github.com/{repo_name}.git')
                 os.chdir(repo_dir)
                 print(f"Cloned repository {repo_name} and switched to directory {repo_dir}")
+                run_command('git fetch origin xyz:xyz')
                 run_command('git checkout xyz')
                 print("Checked out xyz branch")
 
@@ -99,7 +100,10 @@ def main():
                     run_command('git config --global user.name "github-actions"')
                     run_command('git config --global user.email "github-actions@github.com"')
                     run_command('git add .')
-                    run_command(f'git commit -m "Update deployment.yaml with tag {tag} and add release_notes.txt"')
+                    commit_message = f"Add release notes and update deployment.yaml with tag {tag}"
+                    if not deployment_path:
+                        commit_message = f"Add release notes with tag {tag}"
+                    run_command(f'git commit -m "{commit_message}"')
                     print("Committed changes to git")
                     run_command('git push origin xyz')
                     print("Pushed changes to xyz branch")

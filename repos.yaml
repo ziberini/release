@@ -11,16 +11,16 @@ repositories:
   #   release_notes: 
   #     - "Hello"
   #     - "hello World"
-  #     - "this is my test release"
+  #     - "this is my test"
   #   enabled: true
   #   tag: "4.0.15-python"
-  # - name: "ziberini/my-new-app"
-  #   release_notes:
-  #     - "Hello"
-  #     - "hello World"
-  #     - "this is my test release" 
-  #   enabled: true
-  #   tag: "v4.0.10-python"
+  - name: "ziberini/my-new-app"
+    release_notes:
+      - "Hello"
+      - "hello World"
+      - "this is my test release" 
+    enabled: true
+    tag: "v4.0.10-python"
   - name: "ziberini/k8s"
     deployment_path: istio/deployment.yaml
     release_notes: 

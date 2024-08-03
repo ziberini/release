@@ -1,6 +1,5 @@
 repositories:
   - name: "ziberini/practice"
-    deployment_path: ""
     release_notes: 
       - "Hello"
       - "hello World"

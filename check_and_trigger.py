@@ -46,6 +46,13 @@ def main():
                 if not tag_exists(repo, tag):
                     print(f"Tag {tag} not found in {repo_name}, creating tag and dispatching event.")
                     
+                    # Set up git with the PAT
+                    subprocess.run(['git', 'config', '--global', 'user.name', 'github-actions'], check=True)
+                    subprocess.run(['git', 'config', '--global', 'user.email', 'github-actions@github.com'], check=True)
+                    subprocess.run(['git', 'config', '--global', 'credential.helper', 'store'], check=True)
+                    with open(os.path.expanduser("~/.git-credentials"), 'w') as creds:
+                        creds.write(f'https://{token}:x-oauth-basic@github.com\n')
+                    
                     # Create and push the tag
                     subprocess.run(['git', 'tag', tag], check=True)
                     subprocess.run(['git', 'push', 'origin', tag], check=True)

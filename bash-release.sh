@@ -81,7 +81,8 @@ for index in $(seq 0 $(($repo_length - 1))); do
     echo "release_notes.txt content:"
     cat release_notes.txt
 
-    if [ -n "$deployment_path" ]; then
+    # Update the deployment.yaml file with the new tag if deployment_path is specified
+    if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
       # Update the deployment.yaml file with the new tag
       if update_deployment_image "$deployment_path" "$tag"; then
         echo "$deployment_path file updated successfully"
@@ -90,6 +91,8 @@ for index in $(seq 0 $(($repo_length - 1))); do
         rm -rf "${repo##*/}"
         continue
       fi
+    else
+      echo "No deployment_path specified or deployment_path is null, skipping deployment update."
     fi
 
     # Commit and push the changes if there are any
@@ -98,7 +101,9 @@ for index in $(seq 0 $(($repo_length - 1))); do
       git config --global user.email "github-actions@github.com"
       git add .
       commit_message="Add release notes and update deployment.yaml with tag $tag"
-      [ -z "$deployment_path" ] && commit_message="Add release notes with tag $tag"
+      if [ -z "$deployment_path" ] || [ "$deployment_path" == "null" ]; then
+        commit_message="Add release notes with tag $tag"
+      fi
       git commit -m "$commit_message"
       echo "Committed changes to git"
       git push origin xyz
@@ -112,7 +117,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
     rm -rf "${repo##*/}"
     echo "Cleaned up local repository ${repo##*/}"
 
-    if [ -n "$deployment_path" ]; then
+    if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
       echo "Updated $repo with tag $tag in deployment.yaml and pushed to xyz branch with release notes."
     fi
     echo "release_notes.txt file uploaded successfully"

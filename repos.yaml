@@ -1,12 +1,12 @@
 repositories:
-  - name: "ziberini/practice"
-    deployment_path: ""
-    release_notes: 
-      - "Hello"
-      - "hello World"
-      - "this is my test release"
-    enabled: true
-    tag: "4.0.26"
+  # - name: "ziberini/practice"
+  #   deployment_path: ""
+  #   release_notes: 
+  #     - "Hello"
+  #     - "hello World"
+  #     - "this is my test release"
+  #   enabled: true
+  #   tag: "4.0.26"
   # - name: "ziberini/momer"
   #   release_notes: 
   #     - "Hello"

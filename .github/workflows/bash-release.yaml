@@ -1,0 +1,26 @@
+name: Update Deployment
+
+on:
+  push:
+    paths:
+      - 'bash-release.sh'
+
+jobs:
+  update-deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up yq and jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yq jq
+
+      - name: Run Update Script
+        run: |
+          chmod +x bash-release.sh
+          ./bash-release.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

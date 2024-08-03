@@ -3,7 +3,7 @@ name: Update Deployment
 on:
   push:
     paths:
-      - 'cool.sh'
+      - 'repos.yaml'
 
 jobs:
   update-deployment:

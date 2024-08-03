@@ -46,8 +46,11 @@ fi
 
 repositories=$(yq e '.repositories' repos.yaml)
 
+# Get the length of the repositories array
+repo_length=$(echo "$repositories" | yq e 'length')
+
 # Iterate over repositories
-for index in $(seq 0 $(($(echo "$repositories" | yq e 'length')) - 1)); do
+for ((index=0; index<repo_length; index++)); do
   enabled=$(echo "$repositories" | yq e ".[$index].enabled")
   
   if [ "$enabled" == "true" ]; then

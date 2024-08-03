@@ -1,6 +1,6 @@
 repositories:
   - name: "ziberini/practice"
-    deployment_path: istio/deployment.yaml
+    deployment_path: ""
     release_notes: 
       - "Hello"
       - "hello World"

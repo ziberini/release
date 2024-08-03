@@ -9,7 +9,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
   exit 1
 fi
 
-# Define color codess
+# Define color codes
 GREEN='\033[32m'
 YELLOW='\033[33m'
 RED='\033[31m'
@@ -95,7 +95,8 @@ for index in $(seq 0 $(($repo_length - 1))); do
         continue
       fi
     else
-      echo -e "${YELLOW}${repo} does not have a deployment file to update or deployment_path is null, skipping deployment update.${NC}"
+      echo -e "${YELLOW}${repo} does not have a deployment file to update or deployment_path is null, creating tag file.${NC}"
+      echo "$tag" > tag.txt
     fi
 
     # Commit and push the changes if there are any
@@ -117,6 +118,8 @@ for index in $(seq 0 $(($repo_length - 1))); do
 
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
       echo "Updated $repo with new image tag and release notes"
+    else
+      echo -e "${GREEN}Tag file created for $repo with tag $tag.${NC}"
     fi
     echo -e "${GREEN}release_notes.txt file uploaded successfully${NC}"
 

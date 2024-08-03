@@ -33,7 +33,7 @@ update_deployment_image() {
     sed -i "s|\(image: .*:\).*|\1$tag|g" "$deployment_path"
     return 0
   else
-    echo "Error: The deployment.yaml structure is not as expected."
+    echo "Error: The deployment.yaml structure is not as expected or file not found: $deployment_path"
     return 1
   fi
 }
@@ -68,7 +68,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
     fi
 
     # Clone the repository and checkout the xyz branch
-    git clone "https://$GITHUB_TOKEN:x-oauth-basic@github.com/$repo.git"
+    git clone "https://$GITHUB_TOKEN:x-oauth-basic@github.com/$repo.git" "${repo##*/}"
     cd "${repo##*/}"
     echo "Cloned repository $repo and switched to directory ${repo##*/}"
     git fetch origin xyz:xyz

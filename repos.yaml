@@ -26,6 +26,6 @@ repositories:
       - "Hello Sir"
       - "hello World"
       - "this is my test release"
-      - "another release note"
+      - "another note here"
     enabled: true
     tag: "1.0.62"

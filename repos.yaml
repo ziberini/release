@@ -1,5 +1,5 @@
 repositories:
-  - name: "ziberini/practices"
+  - name: "ziberini/practice"
     release_notes: 
       - "Hello"
       - "hello World"

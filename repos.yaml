@@ -5,14 +5,14 @@ repositories:
       - "hello World"
       - "this is my test"
     enabled: true
-    tag: "4.0.26"
+    tag: "4.0.26-tagtxt"
   - name: "ziberini/momer"
     release_notes: 
       - "Hello"
       - "hello World"
       - "this is my test"
     enabled: true
-    tag: "4.0.20"
+    tag: "4.0.25"
   - name: "ziberini/my-new-app"
     release_notes:
       - "Hello"

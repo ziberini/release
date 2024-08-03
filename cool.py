@@ -54,7 +54,6 @@ def main():
             release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
 
             try:
-                print("=============================================================================")
                 print(f"Processing repository: {repo_name}")
 
                 repo = g.get_repo(repo_name)
@@ -86,10 +85,12 @@ def main():
                     with open(deployment_path, 'r') as file:
                         deployment_data = yaml.safe_load(file)
 
-                    # Find and update the image tag in the containers section
-                    for container in deployment_data['spec']['template']['spec']['containers']:
-                        if 'image' in container:
-                            container['image'] = f"{container['image'].split(':')[0]}:{tag}"
+                    # Find and update the image tag in the spec.template.spec.image
+                    if 'spec' in deployment_data and 'template' in deployment_data['spec'] and 'spec' in deployment_data['spec']['template'] and 'image' in deployment_data['spec']['template']['spec']:
+                        deployment_data['spec']['template']['spec']['image'] = f"{deployment_data['spec']['template']['spec']['image'].split(':')[0]}:{tag}"
+                    else:
+                        print(f"Error: The deployment.yaml structure is not as expected.")
+                        continue
 
                     with open(deployment_path, 'w') as file:
                         yaml.safe_dump(deployment_data, file)

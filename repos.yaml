@@ -13,7 +13,7 @@ repositories:
   #     - "hello World"
   #     - "this is my test"
   #   enabled: true
-  #   tag: "4.0.16"
+  #   tag: "4.0.17"
   - name: "ziberini/my-new-app"
     release_notes:
       - "Hello"

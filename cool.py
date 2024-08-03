@@ -54,6 +54,8 @@ def main():
             release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
 
             try:
+                print("=============================================================================")
+                print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
                 print(f"Processing repository: {repo_name}")
 
                 repo = g.get_repo(repo_name)

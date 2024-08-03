@@ -64,7 +64,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
     echo -e "${YELLOW}Processing repository: $repo${NC}"
 
     if tag_exists "$repo" "$tag"; then
-      echo -e "Tag $tag already exists in $repo. Skipping..."
+      echo -e "${GREEN}Tag $tag already exists in $repo. Skipping...${NC}"
       continue
     fi
 
@@ -74,7 +74,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
     echo "Cloned repository $repo and switched to directory ${repo##*/}"
     git fetch origin xyz:xyz
     git checkout xyz
-    echo "checked out xyz branch"
+    echo "Checked out xyz branch"
 
     # Create or update release_notes.txt with the release notes
     echo -e "$release_notes" > release_notes.txt
@@ -93,7 +93,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
         continue
       fi
     else
-      echo "${repo} does not have deployment file to update or deployment_path is null, skipping deployment update."
+      echo "${repo} does not have a deployment file to update or deployment_path is null, skipping deployment update."
     fi
 
     # Commit and push the changes if there are any
@@ -114,7 +114,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
     fi
 
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
-      echo "updated $repo to prep xyz branch for gh release."
+      echo "Updated $repo to prep xyz branch for gh release."
     fi
     echo -e "${GREEN}release_notes.txt file uploaded successfully${NC}"
 

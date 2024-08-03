@@ -27,5 +27,6 @@ repositories:
       - "* hello World"
       - "* this is my test release"
       - "* another note here"
+      - "* THIS IS WORKING FINALLY"
     enabled: true
-    tag: "1.0.9"
+    tag: "100"

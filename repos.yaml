@@ -1,5 +1,6 @@
 repositories:
   - name: "ziberini/practice"
+    deployment_path: k8s/runner-deployment.yaml
     release_notes: 
       - "Hello"
       - "hello World"

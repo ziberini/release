@@ -3,6 +3,7 @@ import yaml
 import json
 import subprocess
 from github import Github
+import base64
 
 # Load the YAML configuration file
 def load_config(file_path):
@@ -39,6 +40,7 @@ def main():
             tag = repo_info['tag']
             release_notes = repo_info['release_notes']
             release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
+            release_notes_b64 = base64.b64encode(release_notes_str.encode()).decode()  # Base64 encode the release notes
             try:
                 repo = g.get_repo(repo_name)
                 if not tag_exists(repo, tag):
@@ -64,7 +66,7 @@ def main():
                         "event_type": "trigger-deploy",
                         "client_payload": {
                             "tag": tag,
-                            "release_notes": release_notes_str
+                            "release_notes": release_notes_b64
                         }
                     }
                     subprocess.run([

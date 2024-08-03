@@ -1,10 +1,9 @@
 repositories:
   - name: "ziberini/practice"
-    deployment_path: k8s/runner-deployment.yaml
     release_notes: 
       - "Hello"
       - "hello World"
-      - "this is my test"
+      - "this is my tests"
     enabled: true
     tag: "4.0.26"
   - name: "ziberini/momer"

@@ -3,7 +3,7 @@ name: Release Management
 on:
   push:
     paths:
-      - 'repos.yaml'
+      - 'reposssss.yaml'
   workflow_dispatch:
 
 jobs:

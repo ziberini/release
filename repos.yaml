@@ -4,28 +4,28 @@ repositories:
       - "Hello"
       - "hello World"
       - "this is my test"
-    enabled: true
+    enabled: false
     tag: "4.0.26"
   - name: "ziberini/momer"
     release_notes: 
       - "Hello"
       - "hello World"
       - "this is my test"
-    enabled: true
+    enabled: false
     tag: "4.0.20"
   - name: "ziberini/my-new-app"
     release_notes:
       - "Hello"
       - "hello World"
       - "this is my test" 
-    enabled: true
+    enabled: false
     tag: "1.0.1"
   - name: "ziberini/k8s"
     deployment_path: istio/deployment.yaml
     release_notes: 
-      - "* Hello Sir"
-      - "* hello World"
-      - "* this is my test release"
-      - "* another note here"
+      - "Hello Sir"
+      - "hello World"
+      - "this is my test release"
+      - "another note here"
     enabled: true
     tag: "1.0.49"

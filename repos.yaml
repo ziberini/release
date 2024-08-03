@@ -21,6 +21,7 @@ repositories:
   #   enabled: true
   #   tag: "v4.0.10-python-release"
   - name: "ziberini/k8s"
+    deployment_path: istio/deployment.yaml
     release_notes: 
       - "Hello"
       - "hello World"

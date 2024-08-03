@@ -114,10 +114,10 @@ for index in $(seq 0 $(($repo_length - 1))); do
     fi
 
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
-      echo "updated $repo with tag $tag in deployment.yaml and pushed to xyz branch with release notes."
+      echo "updated $repo to prep xyz branch for gh release."
     fi
     echo -e "${GREEN}release_notes.txt file uploaded successfully${NC}"
-    
+
     # Go back to the root directory
     cd ..
     rm -rf "${repo##*/}"

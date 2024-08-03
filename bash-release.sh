@@ -9,7 +9,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
   exit 1
 fi
 
-# Define color codes##
+# Define color codes
 GREEN='\033[32m'
 YELLOW='\033[33m'
 NC='\033[0m'  # No Color
@@ -39,10 +39,15 @@ update_deployment_image() {
 }
 
 # Read YAML file
+if [ ! -f repos.yaml ]; then
+  echo -e "\033[31mrepos.yaml file not found.\033[0m"
+  exit 1
+fi
+
 repositories=$(yq e '.repositories' repos.yaml)
 
 # Iterate over repositories
-for index in $(seq 0 $(($(echo "$repositories" | yq e '. | length') - 1))); do
+for index in $(seq 0 $(($(echo "$repositories" | yq e 'length')) - 1)); do
   enabled=$(echo "$repositories" | yq e ".[$index].enabled")
   
   if [ "$enabled" == "true" ]; then

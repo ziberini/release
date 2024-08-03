@@ -11,7 +11,7 @@ fi
 
 # Define color codess
 GREEN='\033[32m'
-YELLOW='\033[33m'
+YELLOW='\033[0;33m'
 RED='\033[31m'
 NC='\033[0m'  # No Color
 

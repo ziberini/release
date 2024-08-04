@@ -13,7 +13,7 @@ def load_config(file_path):
 def run_command(command):
     result = subprocess.run(command, shell=True, capture_output=True, text=True)
     if result.returncode != 0:
-        print(f"Error running command: {command}\n{result.stderr}")
+        print(f"\033[31mError running command: {command}\n{result.stderr}\033[0m")
         raise Exception(f"Command failed: {command}")
     return result.stdout
 
@@ -35,13 +35,28 @@ def tag_exists(repo, tag):
         return False
 
 # Function to update the image tag in the deployment.yaml file
-def update_deployment_image(deployment_data, tag):
-    if 'spec' in deployment_data and 'template' in deployment_data['spec'] and 'spec' in deployment_data['spec']['template'] and 'containers' in deployment_data['spec']['template']['spec']:
-        for container in deployment_data['spec']['template']['spec']['containers']:
-            if 'image' in container:
-                container['image'] = f"{container['image'].split(':')[0]}:{tag}"
-                return True
-    return False
+def update_deployment_image(deployment_path, tag):
+    try:
+        with open(deployment_path, 'r') as file:
+            deployment_data = yaml.safe_load(file)
+        
+        updated = False
+        if 'spec' in deployment_data and 'template' in deployment_data['spec'] and 'spec' in deployment_data['spec']['template'] and 'containers' in deployment_data['spec']['template']['spec']:
+            for container in deployment_data['spec']['template']['spec']['containers']:
+                if 'image' in container:
+                    container['image'] = f"{container['image'].split(':')[0]}:{tag}"
+                    updated = True
+        
+        if updated:
+            with open(deployment_path, 'w') as file:
+                yaml.safe_dump(deployment_data, file)
+            return True
+        else:
+            print(f"\033[31mError: The deployment.yaml structure is not as expected or file not found: {deployment_path}\033[0m")
+            return False
+    except Exception as e:
+        print(f"\033[31mError updating deployment image: {e}\033[0m")
+        return False
 
 # Main function
 def main():
@@ -49,9 +64,10 @@ def main():
         config = load_config('repos.yaml')
 
         # Authenticate with GitHub using a personal access token
-        token = os.getenv('PERSONAL_ACCESS_TOKEN')
+        token = os.getenv('GITHUB_TOKEN')
         if not token:
-            raise ValueError("PERSONAL_ACCESS_TOKEN environment variable is not set")
+            print("\033[31mGITHUB_TOKEN environment variable is not set.\033[0m")
+            sys.exit(1)
 
         # Using an access token
         g = Github(token)
@@ -62,15 +78,15 @@ def main():
                 tag = repo_info['tag']
                 deployment_path = repo_info.get('deployment_path', '')
                 release_notes = repo_info['release_notes']
-                release_notes_str = "\n".join(release_notes)  # Join release notes with new line character
+                release_notes_str = "\n".join([f"- {note}" for note in release_notes])  # Join release notes with new line character
 
                 try:
-                    print("=================================================================================")
-                    print(f"Processing repository: {repo_name}")
+                    print("\033[38;5;226m=================================================================================\033[0m")
+                    print(f"\033[38;5;226mProcessing repository: {repo_name}\033[0m")
 
                     repo = g.get_repo(repo_name)
                     if tag_exists(repo, tag):
-                        print(f"Tag {tag} already exists in {repo_name}. Skipping processing.")
+                        print(f"\033[32mTag {tag} already exists in {repo_name}. Skipping...\033[0m")
                         continue
 
                     # Clone the repository and checkout the xyz branch
@@ -82,28 +98,23 @@ def main():
                     run_command('git checkout xyz')
                     print("Checked out xyz branch")
 
-                    # Create or update release_notes.txt with the release notes
-                    with open('release_notes.txt', 'w') as file:
-                        file.write(release_notes_str)
-                    print("release_notes.txt file generated successfully")
+                    # Create or update release_info.txt with the tag and release notes
+                    with open('release_info.txt', 'w') as file:
+                        file.write(f"TAG: {tag}\n\nRELEASE NOTES:\n{release_notes_str}")
+                    print("release_info.txt file generated successfully")
 
-                    # Verify the release_notes.txt file content
-                    with open('release_notes.txt', 'r') as file:
+                    # Verify the release_info.txt file content
+                    with open('release_info.txt', 'r') as file:
                         content = file.read()
-                        print(f"release_notes.txt content:\n{content}")
+                        print(f"release_info.txt content:\n{content}")
 
                     if deployment_path:
                         # Update the deployment.yaml file with the new tag
-                        with open(deployment_path, 'r') as file:
-                            deployment_data = yaml.safe_load(file)
-
-                        if not update_deployment_image(deployment_data, tag):
-                            print(f"Error: The deployment.yaml structure is not as expected.")
+                        if not update_deployment_image(deployment_path, tag):
+                            os.chdir('..')
+                            run_command(f'rm -rf {repo_dir}')
                             continue
-
-                        with open(deployment_path, 'w') as file:
-                            yaml.safe_dump(deployment_data, file)
-                        print(f"{deployment_path} file updated successfully")
+                        print(f"\033[32m{deployment_path} file updated successfully\033[0m")
 
                     # Commit and push the changes if there are any
                     if has_changes():
@@ -116,7 +127,8 @@ def main():
                         run_command(f'git commit -m "{commit_message}"')
                         print("Committed changes to git")
                         run_command('git push origin xyz')
-                        print("Pushed changes to xyz branch")
+                        print("\033[32mPushed release changes to xyz branch.\033[0m")
+                        print(f"\033[38;5;226mTo TAG and RELEASE '{repo_dir}' repository, merge 'xyz' into 'main' branch which will kick off its build and release pipeline.\033[0m")
                     else:
                         print("No changes to commit")
 
@@ -126,11 +138,12 @@ def main():
                     print(f"Cleaned up local repository {repo_dir}")
 
                     if deployment_path:
-                        print(f"Updated {repo_name} with tag {tag} in deployment.yaml and pushed to xyz branch with release notes.")
-                    print("release_notes.txt file uploaded successfully")
+                        print(f"Updated {repo_name} with new image tag for prod env and release notes")
 
                 except Exception as e:
-                    print(f"Error accessing repository {repo_name}: {e}")
+                    print(f"Error processing repository {repo_name}: {e}")
+                    os.chdir('..')
+                    run_command(f'rm -rf {repo_dir}')
                     raise
 
     except Exception as e:

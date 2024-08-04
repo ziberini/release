@@ -3,7 +3,7 @@ name: Update Deployment
 on:
   push:
     paths:
-      - 'repos.yaml'
+      - 'reposssss.yaml'
 
 jobs:
   update-deployment:

@@ -92,7 +92,7 @@ def main():
                         continue
 
                     # Message indicating the tag does not exist
-                    print(f"Tag {tag} does not exist in {repo_name} repo. Proceeding...")
+                    print(f"Tag {tag} does not exist in '{repo_name}' repo. Proceeding...")
 
                     # Clone the repository and checkout the xyz branch
                     repo_dir = repo_name.split('/')[-1]

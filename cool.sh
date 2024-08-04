@@ -71,7 +71,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
     fi
 
     # Clone the repository and checkout the xyz branch
-    echo -e "${GREEN}Tag $tag does not exist in $repo. Proceeding...${NC}"
+    echo -e "${GREEN}Tag $tag does not exist in $repo repo. Proceeding...${NC}"
     git clone "https://$GITHUB_TOKEN:x-oauth-basic@github.com/$repo.git" "${repo##*/}"
     cd "${repo##*/}"
     echo "Cloned repository $repo and switched to directory ${repo##*/}"

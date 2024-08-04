@@ -25,10 +25,11 @@ repositories:
       - "This is the last note"
   - name: "ziberini/momer"
     enabled: true
-    tag: "1.0.26-py"
+    tag: "1.0.27-py"
     release_notes: 
       - "Hello"
       - "hello World"
       - "this is my test"
       - "another note"
       - "This is the last note"
+      - "updates"

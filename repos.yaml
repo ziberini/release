@@ -31,4 +31,4 @@ repositories:
       - "another note"
       - "This is the last note" 
     enabled: true
-    tag: "1.0.14-cool"
+    tag: "1.0.15-cool"

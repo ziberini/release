@@ -67,6 +67,8 @@ for index in $(seq 0 $(($repo_length - 1))); do
 
     if tag_exists "$repo" "$tag"; then
       echo -e "${GREEN}Tag $tag already exists in $repo. Skipping...${NC}"
+    else
+      echo -e "${GREEN}Tag $tag does not exist in $repo. Proceeding...${NC}"
       continue
     fi
 

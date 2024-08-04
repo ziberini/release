@@ -112,7 +112,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
       echo -e "${GREEN}Pushed release changes to xyz branch.${NC}"
       echo -e "${YELLOW}To TAG and RELEASE '${repo##*/}' repository, merge 'xyz' into 'main' branch which will kick off its build and release pipeline.${NC}"
     else
-      echo "No changes to commit"
+      echo "No changes to commit. Intended Changes are already in '${repo##*/} - xyz' branch."
     fi
 
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then

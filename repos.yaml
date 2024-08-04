@@ -1,6 +1,6 @@
 repositories:
   - name: "ziberini/practice"
-    enabled: false
+    enabled: true
     tag: "4.0.26-tagtxt"
     release_notes: 
       - "Hello"

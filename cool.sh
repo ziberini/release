@@ -94,8 +94,6 @@ for index in $(seq 0 $(($repo_length - 1))); do
         rm -rf "${repo##*/}"
         continue
       fi
-    else
-      echo -e "${YELLOW}${repo} does not have a deployment file to update or deployment_path is null.${NC}"
     fi
 
     # Commit and push the changes if there are any
@@ -103,7 +101,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
       git config --global user.name "github-actions"
       git config --global user.email "github-actions@github.com"
       git add .
-      commit_message="Add release notes and update deployment.yaml with tag $tag"
+      commit_message="Add release notes and update deployment.yaml with $tag tag for prod"
       if [ -z "$deployment_path" ] || [ "$deployment_path" == "null" ]; then
         commit_message="Add release_info.txt with tag $tag and release notes"
       fi
@@ -118,7 +116,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
       echo "Updated $repo with new image tag for prod env and release notes"
     else
-      echo -e "${GREEN}release_info.txt file created for $repo with tag $tag and release notes.${NC}"
+      echo "release_info.txt file created for $repo.${NC}"
     fi
 
     # Go back to the root directory

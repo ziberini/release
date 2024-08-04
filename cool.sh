@@ -103,7 +103,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
       git add .
       commit_message="Add release notes and update deployment.yaml with $tag tag for prod"
       if [ -z "$deployment_path" ] || [ "$deployment_path" == "null" ]; then
-        commit_message="Add release_info.txt with tag $tag and release notes"
+        commit_message="Add release notes for github release"
       fi
       git commit -m "$commit_message"
       echo "Committed changes to git"

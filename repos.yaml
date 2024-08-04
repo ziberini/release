@@ -4,14 +4,14 @@ repositories:
       - "Hello"
       - "hello World"
       - "this is my test"
-    enabled: true
+    enabled: false
     tag: "4.0.26-tagtxt"
   - name: "ziberini/my-new-app"
     release_notes:
       - "Hello"
       - "hello World"
       - "this is my test" 
-    enabled: true
+    enabled: false
     tag: "1.0.1"
   - name: "ziberini/k8s"
     deployment_path: istio/deployment.yaml
@@ -22,7 +22,7 @@ repositories:
       - "another note here"
       - "This is the last note"
     enabled: true
-    tag: "1.0.62-cool"
+    tag: "1.0.63-cool"
   - name: "ziberini/momer"
     release_notes: 
       - "Hello"
@@ -31,4 +31,4 @@ repositories:
       - "another note"
       - "This is the last note" 
     enabled: true
-    tag: "1.0.4-cool"
+    tag: "1.0.3-cool"

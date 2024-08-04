@@ -109,7 +109,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
       echo "Committed changes to git"
       git push origin xyz
       echo "Pushed release changes to xyz branch"
-      echo -e "${YELLOW}TO TAG and RELEASE '${repo##*/}' repository, merge xyz to main branch which will kick off its build and release pipeline${NC}"
+      echo -e "${YELLOW}TO TAG and RELEASE '${repo##*/}' repository, merge 'xyz' to 'main' branch which will kick off its build and release pipeline${NC}"
     else
       echo "No changes to commit"
     fi

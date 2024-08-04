@@ -130,7 +130,7 @@ def main():
                         print("\033[32mPushed release changes to xyz branch.\033[0m")
                         print(f"\033[38;5;226mTo TAG and RELEASE '{repo_dir}' repository, merge 'xyz' into 'main' branch which will kick off its build and release pipeline.\033[0m")
                     else:
-                        print(f"No changes to commit. Intended Changes are already in {repo} - xyz' branch.")
+                        print(f"No changes to commit. Intended Changes are already in {repo_name} - xyz' branch.")
 
                     # Go back to the root directory
                     os.chdir('..')

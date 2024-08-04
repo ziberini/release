@@ -19,7 +19,7 @@ NC='\033[0m'  # No Color
 tag_exists() {
   local repo=$1
   local tag=$2
-  echo -e "${YELLOW}Checking if tag $tag exists in repository $repo...${NC}"
+  echo "Checking if tag $tag exists in repository $repo..."
   local tags=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$repo/git/refs/tags")
   if echo "$tags" | grep -q "refs/tags/$tag"; then
     return 0

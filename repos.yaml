@@ -12,7 +12,7 @@ repositories:
       - "hello World"
       - "this is my test"
     enabled: true
-    tag: "1.0.0-tagtxt"
+    tag: "1.0.1-tagtxt"
   - name: "ziberini/my-new-app"
     release_notes:
       - "Hello"

@@ -115,8 +115,6 @@ for index in $(seq 0 $(($repo_length - 1))); do
 
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
       echo "Updated $repo with new image tag for prod env and release notes"
-    else
-      echo "release_info.txt file created for $repo.${NC}"
     fi
 
     # Go back to the root directory

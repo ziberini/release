@@ -12,7 +12,7 @@ def load_config(file_path):
 # Function to run a shell command
 def run_command(command):
     print(f"Running command: {command}")  # Debugging: Print the command being run
-    result = subprocess.run(command, shell=True, text=True)
+    result = subprocess.run(command, shell=True, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"\033[31mError running command: {command}\n{result.stderr}\033[0m")
         raise Exception(f"Command failed: {command}")
@@ -96,11 +96,14 @@ def main():
 
                     # Clone the repository and checkout the xyz branch
                     repo_dir = repo_name.split('/')[-1]
-                    run_command(f'git clone https://{token}:x-oauth-basic@github.com/{repo_name}.git')
+                    output = run_command(f'git clone https://{token}:x-oauth-basic@github.com/{repo_name}.git')
+                    print(output)
                     os.chdir(repo_dir)
                     print(f"Cloned repository {repo_name} and switched to directory {repo_dir}")
-                    run_command('git fetch origin xyz:xyz')
-                    run_command('git checkout xyz')
+                    output = run_command('git fetch origin xyz:xyz')
+                    print(output)
+                    output = run_command('git checkout xyz')
+                    print(output)
                     print("Checked out xyz branch")
 
                     # Create or update release_info.txt with the tag and release notes
@@ -123,15 +126,20 @@ def main():
 
                     # Commit and push the changes if there are any
                     if has_changes():
-                        run_command('git config --global user.name "github-actions"')
-                        run_command('git config --global user.email "github-actions@github.com"')
-                        run_command('git add .')
+                        output = run_command('git config --global user.name "github-actions"')
+                        print(output)
+                        output = run_command('git config --global user.email "github-actions@github.com"')
+                        print(output)
+                        output = run_command('git add .')
+                        print(output)
                         commit_message = f"Add release notes and update deployment.yaml with tag {tag}"
                         if not deployment_path:
                             commit_message = f"Add release notes with tag {tag}"
-                        run_command(f'git commit -m "{commit_message}"')
+                        output = run_command(f'git commit -m "{commit_message}"')
+                        print(output)
                         print("Committed changes to git")
-                        run_command('git push origin xyz')
+                        output = run_command('git push origin xyz')
+                        print(output)
                         print("\033[32mPushed release changes to xyz branch.\033[0m")
                         print(f"\033[38;5;226mTo TAG and RELEASE '{repo_dir}' repository, merge 'xyz' into 'main' branch which will kick off its build and release pipeline.\033[0m")
                     else:
@@ -139,7 +147,8 @@ def main():
 
                     # Go back to the root directory
                     os.chdir('..')
-                    run_command(f'rm -rf {repo_dir}')
+                    output = run_command(f'rm -rf {repo_dir}')
+                    print(output)
                     print(f"Cleaned up local repository {repo_dir}")
 
                     if deployment_path:

@@ -91,13 +91,15 @@ def main():
 
                     # Clone the repository and checkout the xyz branch
                     repo_dir = repo_name.split('/')[-1]
-                    run_command(f'echo "Tag 1.0.20-cool does not exist in ${repo_name} repo. Proceeding..."')
                     run_command(f'git clone https://{token}:x-oauth-basic@github.com/{repo_name}.git')
                     os.chdir(repo_dir)
                     print(f"Cloned repository {repo_name} and switched to directory {repo_dir}")
                     run_command('git fetch origin xyz:xyz')
                     run_command('git checkout xyz')
                     print("Checked out xyz branch")
+
+                    # Message indicating the tag does not exist
+                    run_command(f'echo "Tag {tag} does not exist in {repo_name} repo. Proceeding..."')
 
                     # Create or update release_info.txt with the tag and release notes
                     with open('release_info.txt', 'w') as file:

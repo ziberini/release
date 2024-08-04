@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-export TERM=xterm-color
+
 # Load GitHub token from environment variable
 GITHUB_TOKEN=${GITHUB_TOKEN}
 if [ -z "$GITHUB_TOKEN" ]; then
@@ -108,7 +108,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
       git commit -m "$commit_message"
       echo "Committed changes to git"
       git push origin xyz
-      echo "Pushed changes to xyz branch"
+      echo "Pushed release changes to xyz branch"
     else
       echo "No changes to commit"
     fi

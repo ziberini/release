@@ -91,6 +91,7 @@ def main():
 
                     # Clone the repository and checkout the xyz branch
                     repo_dir = repo_name.split('/')[-1]
+                    run_command(f'echo "Tag 1.0.20-cool does not exist in ${repo_name} repo. Proceeding..."')
                     run_command(f'git clone https://{token}:x-oauth-basic@github.com/{repo_name}.git')
                     os.chdir(repo_dir)
                     print(f"Cloned repository {repo_name} and switched to directory {repo_dir}")

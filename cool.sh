@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-
+export TERM=xterm-color
 # Load GitHub token from environment variable
 GITHUB_TOKEN=${GITHUB_TOKEN}
 if [ -z "$GITHUB_TOKEN" ]; then
@@ -116,7 +116,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
     fi
 
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
-      echo "Updated $repo with new image tag and release notes"
+      echo "Updated $repo with new image tag for prod env and release notes"
     else
       echo -e "${GREEN}release_info.txt file created for $repo with tag $tag and release notes.${NC}"
     fi

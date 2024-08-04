@@ -11,7 +11,7 @@ fi
 
 # Define color codess
 GREEN='\033[32m'
-YELLOW='\033[33m'
+YELLOW='\033[1;33'
 RED='\033[31m'
 NC='\033[0m'  # No Color
 
@@ -78,11 +78,11 @@ for index in $(seq 0 $(($repo_length - 1))); do
     git checkout xyz
     echo "Checked out xyz branch"
 
-    # Create or update release_notes.txt with the release notes
-    echo -e "$release_notes" > release_notes.txt
-    echo -e "${GREEN}release_notes.txt file generated successfully${NC}"
-    echo "release_notes.txt content:"
-    cat release_notes.txt
+    # Create or update release_info.txt with the tag and release notes
+    echo -e "TAG: $tag\n\nRELEASE NOTES:\n$release_notes" > release_info.txt
+    echo -e "${GREEN}release_info.txt file generated successfully${NC}"
+    echo "release_info.txt content:"
+    cat release_info.txt
 
     # Update the deployment.yaml file with the new tag if deployment_path is specified
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
@@ -95,8 +95,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
         continue
       fi
     else
-      echo -e "${YELLOW}${repo} does not have a deployment file to update or deployment_path is null, creating tag file.${NC}"
-      echo "$tag" > tag.txt
+      echo -e "${YELLOW}${repo} does not have a deployment file to update or deployment_path is null.${NC}"
     fi
 
     # Commit and push the changes if there are any
@@ -106,7 +105,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
       git add .
       commit_message="Add release notes and update deployment.yaml with tag $tag"
       if [ -z "$deployment_path" ] || [ "$deployment_path" == "null" ]; then
-        commit_message="Add release notes with tag $tag"
+        commit_message="Add release_info.txt with tag $tag and release notes"
       fi
       git commit -m "$commit_message"
       echo "Committed changes to git"
@@ -119,9 +118,8 @@ for index in $(seq 0 $(($repo_length - 1))); do
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
       echo "Updated $repo with new image tag and release notes"
     else
-      echo -e "${GREEN}Tag file created for $repo with tag $tag.${NC}"
+      echo -e "${GREEN}release_info.txt file created for $repo with tag $tag and release notes.${NC}"
     fi
-    echo -e "${GREEN}release_notes.txt file uploaded successfully${NC}"
 
     # Go back to the root directory
     cd ..

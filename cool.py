@@ -11,7 +11,8 @@ def load_config(file_path):
 
 # Function to run a shell command
 def run_command(command):
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+    print(f"Running command: {command}")  # Debugging: Print the command being run
+    result = subprocess.run(command, shell=True, text=True)
     if result.returncode != 0:
         print(f"\033[31mError running command: {command}\n{result.stderr}\033[0m")
         raise Exception(f"Command failed: {command}")
@@ -24,6 +25,7 @@ def has_changes():
 
 # Function to check if a tag exists in the repository
 def tag_exists(repo, tag):
+    print(f"Checking if tag {tag} exists in repository {repo.full_name}...")
     try:
         tags = repo.get_tags()
         for t in tags:
@@ -31,7 +33,7 @@ def tag_exists(repo, tag):
                 return True
         return False
     except Exception as e:
-        print(f"Error checking tags for {repo.name}: {e}")
+        print(f"Error checking tags for {repo.full_name}: {e}")
         return False
 
 # Function to update the image tag in the deployment.yaml file
@@ -89,6 +91,9 @@ def main():
                         print(f"\033[32mTag {tag} already exists in {repo_name}. Skipping...\033[0m")
                         continue
 
+                    # Message indicating the tag does not exist
+                    print(f"Tag {tag} does not exist in {repo_name} repo. Proceeding...")
+
                     # Clone the repository and checkout the xyz branch
                     repo_dir = repo_name.split('/')[-1]
                     run_command(f'git clone https://{token}:x-oauth-basic@github.com/{repo_name}.git')
@@ -97,9 +102,6 @@ def main():
                     run_command('git fetch origin xyz:xyz')
                     run_command('git checkout xyz')
                     print("Checked out xyz branch")
-
-                    # Message indicating the tag does not exist
-                    run_command(f'echo "Tag {tag} does not exist in {repo_name} repo. Proceeding..."')
 
                     # Create or update release_info.txt with the tag and release notes
                     with open('release_info.txt', 'w') as file:
@@ -133,7 +135,7 @@ def main():
                         print("\033[32mPushed release changes to xyz branch.\033[0m")
                         print(f"\033[38;5;226mTo TAG and RELEASE '{repo_dir}' repository, merge 'xyz' into 'main' branch which will kick off its build and release pipeline.\033[0m")
                     else:
-                        print(f"No changes to commit. Intended Changes are already in {repo_name} - xyz' branch.")
+                        print("No changes to commit. Intended Changes are already in '{repo_dir} - xyz' branch.")
 
                     # Go back to the root directory
                     os.chdir('..')

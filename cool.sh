@@ -67,12 +67,11 @@ for index in $(seq 0 $(($repo_length - 1))); do
 
     if tag_exists "$repo" "$tag"; then
       echo -e "${GREEN}Tag $tag already exists in $repo. Skipping...${NC}"
-    else
-      echo -e "${GREEN}Tag $tag does not exist in $repo. Proceeding...${NC}"
       continue
     fi
 
     # Clone the repository and checkout the xyz branch
+    echo -e "${GREEN}Tag $tag does not exist in $repo. Proceeding...${NC}"
     git clone "https://$GITHUB_TOKEN:x-oauth-basic@github.com/$repo.git" "${repo##*/}"
     cd "${repo##*/}"
     echo "Cloned repository $repo and switched to directory ${repo##*/}"

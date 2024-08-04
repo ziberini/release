@@ -81,7 +81,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
 
     # Create or update release_info.txt with the tag and release notes
     echo -e "TAG: $tag\n\nRELEASE NOTES:\n$release_notes" > release_info.txt
-    echo -e "${GREEN}release_info.txt file generated successfully${NC}"
+    echo "release_info.txt file generated successfully."
     echo "release_info.txt content:"
     cat release_info.txt
 

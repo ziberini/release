@@ -28,15 +28,23 @@ tag_exists() {
   fi
 }
 
-# Function to update the image tag in the deployment.yaml file
-update_deployment_image() {
-  local deployment_path=$1
-  local tag=$2
-  if [ -f "$deployment_path" ]; then
-    sed -i "s|\(image: .*:\).*|\1$tag|g" "$deployment_path"
+# Function to update the image tag in the specified YAML file
+update_image_tag_in_yaml() {
+  local repo=$1
+  local file_path=$2
+  local tag=$3
+
+  if [ -f "$file_path" ]; then
+    if [ "$repo" == "airflow" ]; then
+      # Update the tag in the Airflow values.yaml file
+      sed -i "s|\(images:\s*airflow:\s*tag:\s*\).*|\1$tag|g" "$file_path"
+    else
+      # Update the tag in the standard Kubernetes deployment.yaml file
+      sed -i "s|\(image: .*:\).*|\1$tag|g" "$file_path"
+    fi
     return 0
   else
-    echo -e "${RED}Error: The deployment.yaml structure is not as expected or file not found: $deployment_path${NC}"
+    echo -e "${RED}Error: The file structure is not as expected or file not found: $file_path${NC}"
     return 1
   fi
 }
@@ -85,10 +93,9 @@ for index in $(seq 0 $(($repo_length - 1))); do
     echo "release_info.txt content:"
     cat release_info.txt
 
-    # Update the deployment.yaml file with the new tag if deployment_path is specified
+    # Update the specified YAML file with the new tag
     if [ -n "$deployment_path" ] && [ "$deployment_path" != "null" ]; then
-      # Update the deployment.yaml file with the new tag
-      if update_deployment_image "$deployment_path" "$tag"; then
+      if update_image_tag_in_yaml "$repo" "$deployment_path" "$tag"; then
         echo -e "${GREEN}$deployment_path file updated successfully${NC}"
       else
         cd ..
@@ -102,7 +109,7 @@ for index in $(seq 0 $(($repo_length - 1))); do
       git config --global user.name "github-actions"
       git config --global user.email "github-actions@github.com"
       git add .
-      commit_message="Add release notes and update deployment.yaml with $tag tag for prod"
+      commit_message="Add release notes and update $deployment_path with $tag tag for prod"
       if [ -z "$deployment_path" ] || [ "$deployment_path" == "null" ]; then
         commit_message="Add release notes for github release"
       fi

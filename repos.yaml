@@ -23,7 +23,7 @@ repositories:
       - "this is my test release"
       - "another note here"
       - "This is the last note"
-  - name: "ziberini/test"
+  - name: "ziberini/airflow"
     enabled: true
     tag: "1.0.26-py"
     release_notes: 

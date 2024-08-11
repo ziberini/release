@@ -27,7 +27,7 @@ repositories:
     enabled: true
     tag: "1.0.26-py"
     release_notes: 
-      - "Hello hello"
+      - "Hello"
       - "hello World"
       - "this is my test"
       - "another note"
